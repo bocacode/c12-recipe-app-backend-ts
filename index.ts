@@ -11,8 +11,8 @@ const PORT = process.env.PORT
 
 const client = new MongoClient(process.env.MONGO_URI as string)
 const db = client.db('recipe-app')
-const recipe = db.collection('Recipes')
-const users = db.collection('Users')
+const recipe = db.collection('recipes')
+const users = db.collection('users')
 
 
 app.listen(PORT , () => console.log('Database listening on port', PORT))
@@ -33,4 +33,12 @@ app.patch('/:_id', async (req, res) => {
   const cleanId = new ObjectId(req.params._id)
   const updatedRecipe = await recipe.findOneAndUpdate( {_id: cleanId}, {$set: req.body})
   res.send(updatedRecipe)
+})
+
+//delete recipe
+app.delete('/:_id', async (req, res) => {
+  const cleanId = new Object (req.params._id)
+  console.log('req.params->', req.params)
+  const recipeDeleted = await recipe.findOneAndDelete({ _id: cleanId })
+  res.send(recipeDeleted)
 })
