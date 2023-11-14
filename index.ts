@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import 'dotenv/config'
 
 const app = express()
@@ -14,3 +14,10 @@ app.listen(PORT , () => console.log('Database listening on port', PORT))
 app.get('/', (req, res) => {
   res.json('Here is my API responding')
 })
+
+app.post('/recipes', (req, res) => {
+
+   const newRecipe = { title: req.body.title, content: req.body.content}
+   
+})
+
