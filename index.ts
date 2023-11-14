@@ -15,9 +15,20 @@ app.get('/', (req, res) => {
   res.json('Here is my API responding')
 })
 
-app.post('/recipes', (req, res) => {
 
-   const newRecipe = { title: req.body.title, content: req.body.content}
-   
+// implement delete route 
+const client = new MongoClient(process.env.MONGO_URI as string)
+const db = client.db('recipe-app')
+const recipe = db.collection('recipes')
+
+app.delete('/:_id', async (req, res) => {
+  const cleanId = new Object (req.params._id)
+  console.log('req.params->', req.params)
+  const recipeDeleted = await recipe.findOneAndDelete({ _id: cleanId })
+  res.send(recipeDeleted)
 })
 
+app.post('/recipes', async (req,res) => {
+  const newRecipe = { title: req.body.title, content: req.body.content }
+	await recipe.insertOne(newRecipe)
+})
