@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import { MongoClient, ObjectId } from 'mongodb'
 import 'dotenv/config'
+import bcrypt from 'bcrypt'
+
 
 const app = express()
 app.use(cors())
@@ -24,7 +26,8 @@ app.get('/', (req, res) => {
 //signup
 app.post('/signup', async (req, res) => {
   const { firstName, lastName, email, password } = req.body
-  const newUser = await users.insertOne( { firstName: firstName, lastName: lastName, email: email, password: password })
+  const hashPass = await bcrypt.hash(password, 12)
+  const newUser = await users.insertOne( { firstName: firstName, lastName: lastName, email: email, password: hashPass })
   res.status(201).send(newUser)
 })
 
