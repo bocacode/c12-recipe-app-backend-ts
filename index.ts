@@ -42,3 +42,8 @@ app.delete('/:_id', async (req, res) => {
   const recipeDeleted = await recipe.findOneAndDelete({ _id: cleanId })
   res.send(recipeDeleted)
 })
+
+app.post('/recipes', async (req,res) => {
+  const newRecipe = { title: req.body.title, content: req.body.content }
+	await recipe.insertOne(newRecipe)
+})
